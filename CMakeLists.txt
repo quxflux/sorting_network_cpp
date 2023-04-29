@@ -39,10 +39,15 @@ endif()
 if(BUILD_TESTS)
   find_package(GTest REQUIRED)
   include(GoogleTest)
-  enable_testing()
 
-  add_executable(${SN_TESTS_EXECUTABLE_NAME} "test/test_case_gen.h" "test/sorting_network_tests.cpp")
+  add_executable(${SN_TESTS_EXECUTABLE_NAME}
+  "test/test_base.h"
+  "test/test_batcher_odd_even_merge_sort.cpp"
+  "test/test_bitonic_merge_sort.cpp"
+  "test/test_bose_nelson_sort.cpp"
+  "test/test_bubble_sort.cpp"
+  "test/test_insertion_sort.cpp"
+  "test/test_size_optimized_sort.cpp"
+  )
   target_link_libraries(${SN_TESTS_EXECUTABLE_NAME} GTest::gtest GTest::gtest_main metal project_options)
-
-  gtest_discover_tests(${SN_TESTS_EXECUTABLE_NAME})
 endif()
