@@ -17,6 +17,7 @@
 #include <chrono>
 #include <cstddef>
 #include <map>
+#include <optional>
 #include <random>
 #include <sstream>
 #include <string>
