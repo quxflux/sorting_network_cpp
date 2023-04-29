@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo 'creating single header implementation'
+LOCAL_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+py "$LOCAL_DIR/../scripts/make_single_header_impl.py"
+
+git add "single_header_impl"
