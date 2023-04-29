@@ -25,27 +25,30 @@
 
 struct Vec2i : std::array<uint16_t, 2>
 {
-    // A slightly more complex comparison operation:
-    // compare the morton code of two points (by generating the
-    // morton codes on the fly)
+  // A slightly more complex comparison operation:
+  // compare the morton code of two points (by generating the
+  // morton codes on the fly)
 
-    static uint16_t ExpandBits(uint16_t x)
-    {
-        x &= 0x000003ff;                   // x = ---- ---- ---- ---- ---- --98 7654 3210
-        x = (x ^ (x << 16)) & 0x030000ff;  // x = ---- --98 ---- ---- ---- ---- 7654 3210
-        x = (x ^ (x << 8)) & 0x0300f00f;   // x = ---- --98 ---- ---- 7654 ---- ---- 3210
-        x = (x ^ (x << 4)) & 0x030c30c3;   // x = ---- --98 ---- 76-- --54 ---- 32-- --10
-        x = (x ^ (x << 2)) & 0x09249249;   // x = ---- 9--8 --7- -6-- 5--4 --3- -2-- 1--0
+  static constexpr uint16_t ExpandBits(uint16_t x) noexcept
+  {
+    x &= 0x000003ff;                   // x = ---- ---- ---- ---- ---- --98 7654 3210
+    x = (x ^ (x << 16)) & 0x030000ff;  // x = ---- --98 ---- ---- ---- ---- 7654 3210
+    x = (x ^ (x << 8)) & 0x0300f00f;   // x = ---- --98 ---- ---- 7654 ---- ---- 3210
+    x = (x ^ (x << 4)) & 0x030c30c3;   // x = ---- --98 ---- 76-- --54 ---- 32-- --10
+    x = (x ^ (x << 2)) & 0x09249249;   // x = ---- 9--8 --7- -6-- 5--4 --3- -2-- 1--0
 
-        return x;
-    }
+    return x;
+  }
 
-    static uint32_t GenerateMortonCode2d(const Vec2i& p) { return (ExpandBits(p[0]) << 1 | ExpandBits(p[1])); }
+  static constexpr uint32_t GenerateMortonCode2d(const Vec2i& p) noexcept
+  {
+    return (ExpandBits(p[0]) << 1 | ExpandBits(p[1]));
+  }
 
-    bool operator()(const Vec2i& lhs, const Vec2i& rhs) const
-    {
-        return GenerateMortonCode2d(lhs) < GenerateMortonCode2d(rhs);
-    }
+  constexpr bool operator()(const Vec2i& lhs, const Vec2i& rhs) const noexcept
+  {
+    return GenerateMortonCode2d(lhs) < GenerateMortonCode2d(rhs);
+  }
 };
 
 using algorithm_name = std::string_view;

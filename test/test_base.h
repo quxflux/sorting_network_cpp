@@ -33,7 +33,7 @@
 
 namespace quxflux::sorting_net
 {
-  static inline constexpr std::size_t max_networks_to_test = 35;
+  static inline constexpr std::size_t max_array_size_to_test = 35;
 
   struct custom_type
   {
@@ -133,7 +133,7 @@ namespace quxflux::sorting_net
     return {};
   }
 
-  template<type Network, size_t MaxSize = max_networks_to_test>
+  template<type Network, size_t MaxSize = max_array_size_to_test>
   using test_specs_for_network = decltype(generate_google_test_specs(sizes_and_value_types<Network, MaxSize>{}));
 
   template<typename It, typename RandomDevice>
