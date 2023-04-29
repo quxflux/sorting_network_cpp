@@ -16,4 +16,9 @@
 
 #pragma once
 
-#include <sorting_network_cpp/networks/all.h>
+#include <sorting_network_cpp/networks/batcher_odd_even_merge_sort.h>
+#include <sorting_network_cpp/networks/bitonic_merge_sort.h>
+#include <sorting_network_cpp/networks/bose_nelson_sort.h>
+#include <sorting_network_cpp/networks/bubble_sort.h>
+#include <sorting_network_cpp/networks/insertion_sort.h>
+#include <sorting_network_cpp/networks/size_optimized_sort.h>
