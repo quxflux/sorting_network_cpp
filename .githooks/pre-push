@@ -5,3 +5,7 @@ LOCAL_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 py "$LOCAL_DIR/../scripts/make_single_header_impl.py"
 
 git add "single_header_impl"
+
+if ! "git diff --quiet --cached single_header_impl"; then
+    exit -1
+fi
