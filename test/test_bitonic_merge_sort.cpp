@@ -14,6 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "test_base.h"
 
-#include <sorting_network_cpp/networks/all.h>
+#include <sorting_network_cpp/networks/bitonic_merge_sort.h>
+
+namespace quxflux::sorting_net
+{
+  INSTANTIATE_TYPED_TEST_SUITE_P(sorting_network_test_bitonic_merge_sort, sorting_network_test,
+                                 test_specs_for_network<type::bitonic_merge_sort>);
+
+}  // namespace quxflux::sorting_net
