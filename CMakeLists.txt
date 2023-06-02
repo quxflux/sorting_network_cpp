@@ -2,34 +2,30 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 project(sorting_network_cpp)
 
-option(BUILD_BENCHMARK "Build the benchmark" ON)
-option(BUILD_TESTS "Build the tests" OFF)
-
-include(cmake/Conan.cmake)
-run_conan()
+option(SORTING_NETWORK_CPP_BUILD_BENCHMARK "Build the benchmark" OFF)
+option(SORTING_NETWORK_CPP_BUILD_TESTS "Build the tests" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(cmake/CPM.cmake)
 
 add_library(project_options INTERFACE)
 target_compile_features(project_options INTERFACE cxx_std_17)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-    target_compile_options(project_options INTERFACE /W3 /O2 /fp:fast)
-    target_link_options(project_options INTERFACE /OPT:REF /GL)
+    target_compile_options(project_options INTERFACE $<$<NOT:$<CONFIG:Debug>>: /W3 /O2 /fp:fast> /bigobj)
+    target_link_options(project_options INTERFACE $<$<NOT:$<CONFIG:Debug>>: /OPT:REF /GL>)
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-    target_compile_options(project_options INTERFACE -O3 -ffast-math)
+    target_compile_options(project_options INTERFACE $<$<NOT:$<CONFIG:Debug>>: -O3 -ffast-math>)
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-    target_compile_options(project_options INTERFACE -O3 -ffast-math)
+    target_compile_options(project_options INTERFACE $<$<NOT:$<CONFIG:Debug>>: -O3 -ffast-math>)
 endif()
 
-add_library(sorting_network_cpp_lib INTERFACE)
-target_include_directories(sorting_network_cpp_lib INTERFACE "include")
+add_library(sorting_network_cpp INTERFACE)
+target_include_directories(sorting_network_cpp INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-add_library(metal INTERFACE)
-target_include_directories(metal INTERFACE "extern/metal/include")
-
-if (BUILD_BENCHMARK)
+if (SORTING_NETWORK_CPP_BUILD_BENCHMARK)
     set(SN_BENCHMARK_EXECUTABLE_NAME ${PROJECT_NAME}_benchmark)
 
     add_executable(${SN_BENCHMARK_EXECUTABLE_NAME}
@@ -42,13 +38,17 @@ if (BUILD_BENCHMARK)
         "src/benchmark_double.cpp"
         "src/benchmark_vec2i.cpp"
     )
-    target_link_libraries(${SN_BENCHMARK_EXECUTABLE_NAME} PRIVATE project_options sorting_network_cpp_lib)
+    target_link_libraries(${SN_BENCHMARK_EXECUTABLE_NAME} PRIVATE project_options sorting_network_cpp)
 endif()
 
-if(BUILD_TESTS)
+if(SORTING_NETWORK_CPP_BUILD_TESTS)
+    set(METAL_BUILD_DOC OFF)
+    set(METAL_BUILD_EXAMPLES OFF)
+    set(METAL_BUILD_TESTS OFF)
+    CPMAddPackage("gh:brunocodutra/metal#v2.1.4")
+    CPMAddPackage("gh:google/googletest#release-1.12.0")
+
     set(SN_TESTS_EXECUTABLE_NAME ${PROJECT_NAME}_tests)
-    find_package(GTest REQUIRED)
-    include(GoogleTest)
 
     add_executable(${SN_TESTS_EXECUTABLE_NAME}
         "test/test_base.h"
@@ -59,5 +59,5 @@ if(BUILD_TESTS)
         "test/test_insertion_sort.cpp"
         "test/test_size_optimized_sort.cpp"
     )
-    target_link_libraries(${SN_TESTS_EXECUTABLE_NAME} GTest::gtest GTest::gtest_main metal project_options sorting_network_cpp_lib)
+    target_link_libraries(${SN_TESTS_EXECUTABLE_NAME} GTest::gtest GTest::gmock GTest::gtest_main Metal project_options sorting_network_cpp)
 endif()
