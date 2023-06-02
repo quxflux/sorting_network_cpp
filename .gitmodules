@@ -1,3 +1,0 @@
-[submodule "extern/metal"]
-	path = extern/metal
-	url = https://github.com/brunocodutra/metal.git
