@@ -14,7 +14,7 @@ include_dir_path = os.path.join(dir_path, '..', 'include', 'sorting_network_cpp'
 
 joined_contents = open(os.path.join(include_dir_path, 'common.h'), 'r', encoding='utf8').read() + '\n'
 
-all_files = [f for f in listdir(include_dir_path) if not f in set(['common.h', 'all.h'])]
+all_files = sorted([f for f in listdir(include_dir_path) if not f in set(['common.h', 'all.h'])])
 
 for f in all_files:
     joined_contents += _read_and_filter_network_impl_file(os.path.join(include_dir_path, f))

@@ -18,6 +18,7 @@
 
 #include <cstdint>
 #include <iterator>
+#include <tuple>
 #include <type_traits>
 #include <utility>
 
