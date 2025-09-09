@@ -2,7 +2,7 @@
 
 sorting_network_cpp offers templated implementations of various types of [sorting networks](https://en.wikipedia.org/wiki/Sorting_network) which can drastically improve performance for small problem sizes of simple data compared to regular sorting algorithms (e.g. `std::sort`).
 
-Following listing shows the execution time for different algorithms to sort one million arrays of each 32 random `float` values on an AMD Ryzen 7 2700x @3.70 GHz (compiled with clang 12.0.0 `-O3`):
+The following listing shows the execution time for different algorithms to sort one million arrays of each 32 random `float` values on an AMD Ryzen 7 2700x @3.70 GHz (compiled with clang 12.0.0 `-O3`):
 
 | algorithm                   | time (ms) | speedup vs `std::sort` |
 |-----------------------------|:---------:|:----------------------:|
@@ -19,7 +19,7 @@ An interactive overview of performance measurements for the sorting networks on 
 
 A single class `sorting_network` is available which encapsulates the implementation of the different sorting networks.
 
-Following listing gives a few examples:
+The following listing gives a few examples:
 
 ```cpp
 #include <sorting_network_cpp/sorting_network.h>
@@ -53,7 +53,7 @@ void example()
   {
     int data[N];
 
-    // by default std::less<T> is used as comparator, custom comparators
+    // by default, std::less<T> is used as the comparator; custom comparators
     // may be passed as follows:
 
     // custom comparators
@@ -80,14 +80,14 @@ Available network types ATM are:
 * `bitonic_merge_sort`
 * `size_optimized_sort`
 
-Following example shows how to specify a different `type` than the default one:
+The following example shows how to specify a different `type` than the default one:
 
 ```cpp
 quxflux::sorting_net::sorting_network<N, quxflux::sorting_net::type::bitonic_merge_sort>()(std::begin(data_to_be_sorted));
 ```
 ## Using custom compare and swap implementations
 
-The compare and swap operation is the fundamental element a sorting network is composed of. The default implementation works well on scalar types, but if you want to specify a custom implementation (e.g. when hardware intrinsics should be used) you may do this by providing a compare and swap functor to the `sorting_network::operator()` as in following example:
+The compare and swap operation is the fundamental element a sorting network is composed of. The default implementation works well on scalar types. However, if you want to specify a custom implementation (e.g., when hardware intrinsics should be used), you may do this by providing a compare and swap functor to the `sorting_network::operator()` as in the following example:
 
 ```cpp
 #include <sorting_network_cpp/sorting_network.h>
@@ -105,17 +105,17 @@ void example(std::array<float,3>& arr)
 ```
 
 ## Single header implementation
-A single header implementation is available which allows experimenting with the sorting networks on [godbolt](https://godbolt.org/z/69WMqMY3c).
+A single header implementation is available which allows experimenting with the sorting networks on [****godbolt](https://godbolt.org/z/69WMqMY3c).
 
 ## Requirements
 A compiler with C++17 support
 
 ## Dependencies
-For the bare sorting functionality no dependencies are required. If you want to run the tests, the needed dependencies will be installed via conan.
+For the bare sorting functionality, no dependencies are required. If you want to run the tests, the required dependencies will automatically be fetched via [CPM](https://github.com/cpm-cmake/CPM.cmake).
 
 ## Limitations
 * Depending on the implementation of the comparator the performance advantage of a sorting net compared to a regular sorting algorithm (e.g. `std::sort`) may diminish or even result in worse performance. This can be seen in the [interactive benchmark results overview](https://raw.githack.com/quxflux/sorting_network_cpp/master/doc/data_explorer.htm) for the data type `Vec2i Z-order` which causes in most cases all variants of sorting networks being outperformed by `std::sort` (see [src/benchmark.cpp](src/benchmark.cpp) for the implementation of the aforementioned data type).
-* msvc will fail compiling larger `insertion_sort` networks in certain (unknown) configurations with `fatal error C1202: recursive type or function dependency context too complex`
+* msvc will fail to compile larger `insertion_sort` networks in certain (unknown) configurations with `fatal error C1202: recursive type or function dependency context too complex`
 
 ## Development notes
 * A pre-push [githook](https://git-scm.com/docs/githooks) is available in [.githooks](./.githooks/) which will automatically create the single header implementation. 
