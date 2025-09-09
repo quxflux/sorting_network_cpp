@@ -105,7 +105,7 @@ void example(std::array<float,3>& arr)
 ```
 
 ## Single header implementation
-A single header implementation is available which allows experimenting with the sorting networks on [****godbolt](https://godbolt.org/z/69WMqMY3c).
+A single header implementation is available which allows experimenting with the sorting networks on [godbolt](https://godbolt.org/z/69WMqMY3c).
 
 ## Requirements
 A compiler with C++17 support
