@@ -25,7 +25,7 @@ namespace quxflux::sorting_net
     17  // if chosen too large, msbuild will fail with "fatal error C1202: recursive type or function dependency context
         // too complex"
 #else
-    max_networks_to_test
+    max_array_size_to_test
 #endif
     ;
 
