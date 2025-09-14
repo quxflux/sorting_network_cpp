@@ -102,7 +102,7 @@ namespace quxflux
     }
 
     template<typename T>
-    constexpr std::string_view to_string()
+    std::string_view to_string()
     {
       const std::unordered_map<std::type_index, std::string_view> name_map{
         std::pair{std::type_index(typeid(int16_t)), "int16_t"},      //
@@ -122,7 +122,7 @@ namespace quxflux
     }
 
     template<quxflux::sorting_net::type NWT>
-    constexpr std::string_view to_string()
+    std::string_view to_string()
     {
       using SN = quxflux::sorting_net::type;
 
