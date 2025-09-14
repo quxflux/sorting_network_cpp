@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+#include <algorithm>
 #include <array>
 #include <chrono>
 #include <cstddef>
@@ -101,9 +102,9 @@ namespace quxflux
     }
 
     template<typename T>
-    constexpr std::string_view to_string()
+    std::string_view to_string()
     {
-      static std::unordered_map<std::type_index, std::string_view> name_map{
+      const std::unordered_map<std::type_index, std::string_view> name_map{
         std::pair{std::type_index(typeid(int16_t)), "int16_t"},      //
         std::pair{std::type_index(typeid(int32_t)), "int32_t"},      //
         std::pair{std::type_index(typeid(int64_t)), "int64_t"},      //
@@ -121,11 +122,11 @@ namespace quxflux
     }
 
     template<quxflux::sorting_net::type NWT>
-    constexpr std::string_view to_string()
+    std::string_view to_string()
     {
       using SN = quxflux::sorting_net::type;
 
-      static std::unordered_map<quxflux::sorting_net::type, std::string_view> name_map{
+      const std::unordered_map<quxflux::sorting_net::type, std::string_view> name_map{
         std::pair{SN::bubble_sort, "SN::bubble_sort"},                                  //
         std::pair{SN::insertion_sort, "SN::insertion_sort"},                            //
         std::pair{SN::batcher_odd_even_merge_sort, "SN::batcher_odd_even_merge_sort"},  //
@@ -237,16 +238,16 @@ namespace quxflux
 
 #define IMPL_BENCHMARK(T)                                                                                              \
   template<>                                                                                                           \
-  void detail::benchmark_impl<##T>::operator()(std::set<benchmark_result>& benchmark_results) const                    \
+  void detail::benchmark_impl<T>::operator()(std::set<benchmark_result>& benchmark_results) const                    \
   {                                                                                                                    \
-    benchmark_all_with_size_and_type<1, ##T>(benchmark_results);                                                       \
-    benchmark_all_with_size_and_type<2, ##T>(benchmark_results);                                                       \
-    benchmark_all_with_size_and_type<4, ##T>(benchmark_results);                                                       \
-    benchmark_all_with_size_and_type<8, ##T>(benchmark_results);                                                       \
-    benchmark_all_with_size_and_type<16, ##T>(benchmark_results);                                                      \
-    benchmark_all_with_size_and_type<32, ##T>(benchmark_results);                                                      \
-    benchmark_all_with_size_and_type<64, ##T>(benchmark_results);                                                      \
-    benchmark_all_with_size_and_type<128, ##T>(benchmark_results);                                                     \
+    benchmark_all_with_size_and_type<1, T>(benchmark_results);                                                       \
+    benchmark_all_with_size_and_type<2, T>(benchmark_results);                                                       \
+    benchmark_all_with_size_and_type<4, T>(benchmark_results);                                                       \
+    benchmark_all_with_size_and_type<8, T>(benchmark_results);                                                       \
+    benchmark_all_with_size_and_type<16, T>(benchmark_results);                                                      \
+    benchmark_all_with_size_and_type<32, T>(benchmark_results);                                                      \
+    benchmark_all_with_size_and_type<64, T>(benchmark_results);                                                      \
+    benchmark_all_with_size_and_type<128, T>(benchmark_results);                                                     \
                                                                                                                        \
     std::clog << '\n';                                                                                                 \
   }                                                                                                                    \

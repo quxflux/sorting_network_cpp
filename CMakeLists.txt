@@ -48,6 +48,10 @@ if(SORTING_NETWORK_CPP_BUILD_TESTS)
     CPMAddPackage("gh:brunocodutra/metal#v2.1.4")
     CPMAddPackage("gh:google/googletest#release-1.12.0")
 
+    include(GoogleTest)
+
+    enable_testing()
+
     set(SN_TESTS_EXECUTABLE_NAME ${PROJECT_NAME}_tests)
 
     add_executable(${SN_TESTS_EXECUTABLE_NAME}
@@ -60,4 +64,5 @@ if(SORTING_NETWORK_CPP_BUILD_TESTS)
         "test/test_size_optimized_sort.cpp"
     )
     target_link_libraries(${SN_TESTS_EXECUTABLE_NAME} GTest::gtest GTest::gmock GTest::gtest_main Metal project_options sorting_network_cpp)
+    gtest_discover_tests(${SN_TESTS_EXECUTABLE_NAME})
 endif()
